@@ -166,8 +166,8 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 2
 
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-USE_RECOVERY_INSTALLER := true
-RECOVERY_INSTALLER_PATH := device/realme/RMX2117/installer
+
+
 
 TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone4/temp
 TW_Y_OFFSET := 115
