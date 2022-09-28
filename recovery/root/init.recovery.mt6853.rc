@@ -1,11 +1,12 @@
 import /tee.rc
+import /trustonic.rc
 
 on init
     export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw
+    chmod 0777 /system/bin/modelchange.sh
 
 on fs
     install_keyring
-
     write /sys/class/power_supply/usb/otg_switch 1
     write /sys/class/oplus_chg/usb/otg_switch 1
 
@@ -24,29 +25,7 @@ service keystore /system/bin/keystore /tmp/misc/keystore
     disabled
     seclabel u:r:recovery:s0
 
-# Start Daemon (Registry directories should already be present)
-service mobicore /vendor/bin/mcDriverDaemon --P1 /mnt/vendor/persist/mcRegistry \
-    -r /vendor/app/mcRegistry/020f0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/05120000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/020b0000000000000000000000000000.drbin \
-    -r /odm/vendor/app/mcRegistry/05070000000000000000000000000000.drbin \
-    -r /odm/vendor/app/mcRegistry/030b0000000000000000000000000000.drbin \
-    -r /odm/vendor/app/mcRegistry/030c0000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/07060000000000000000000000007169.drbin \
-    -r /vendor/app/mcRegistry/40188311faf343488db888ad39496f9a.drbin \
-    -r /vendor/app/mcRegistry/06090000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/0f5eed3c3b5a47afacca69a84bf0efad.drbin \
-    -r /vendor/app/mcRegistry/07407000000000000000000000000000.drbin \
-    -r /vendor/app/mcRegistry/9073f03a9618383bb1856eb3f990babd.drbin \
-    -r /vendor/app/mcRegistry/6b3f5fa0f8cf55a7be2582587d62d63a.drbin \
-    -r /vendor/app/mcRegistry/5020170115e016302017012521300000.drbin \
-    -r /odm/vendor/app/mcRegistry/09070000000000000000000000000000.drbin
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service hal_cryptoeng_oppo /system/bin/hw/vendor.oplus.hardware.cryptoeng@1.0-service
+service hal_cryptoeng_oppo /system/bin/vendor.oplus.hardware.cryptoeng@1.0-service
     user root
     group root input sdcard_rw sdcard_r
     disabled
@@ -58,32 +37,21 @@ service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service.truston
     disabled
     seclabel u:r:recovery:s0
 
-service vendor.gatekeeper-1-0 /vendor/bin/hw/android.hardware.gatekeeper@1.0-service
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-service gatekeeperd /system/bin/gatekeeperd /data/misc/gatekeeper
+service modelchange /system/bin/modelchange.sh
     user root
     group root
     disabled
     seclabel u:r:recovery:s0
 
-on property:enable.fbe.service=0
-    stop hal_cryptoeng_oppo
-    stop mobicore
-    stop servicemanager
-    stop hwservicemanager
-    stop keymaster-4-0
-    stop gatekeeperd
-    stop vendor.gatekeeper-1-0
-
-
-service hwservicemanager /system/bin/hwservicemanager
 on property:hwservicemanager.ready=true
-    start hal_cryptoeng_oppo
     start mobicore
+    start hal_cryptoeng_oppo
     start keymaster-4-0
     start gatekeeper-1-0
 
@@ -110,6 +78,11 @@ on property:twrp.decrypt.done=true
     stop gatekeeper-1-0
     stop servicemanager
     stop hwservicemanager
+    rm /sdcard/TWRP/magisk
+    mkdir /sdcard/TWRP/magisk
+    symlink /system/magisk/InstallMagisk.zip /sdcard/TWRP/magisk/InstallMagisk.zip
+    symlink /system/magisk/uninstall.zip /sdcard/TWRP/magisk/uninstall.zip
+    symlink /system/magisk/NoReplaceTWRP.zip /sdcard/TWRP/magisk/NoReplaceTWRP.zip
 
 on property:sys.usb.config=fastboot
     start servicemanager
@@ -120,3 +93,4 @@ on post-fs-data
     mkdir /data/vendor_de 0770 system system
     mkdir /data/vendor_de/0 0770 system system
     mkdir /data/vendor_de/0/cryptoeng 0770 system system
+    start modelchange
