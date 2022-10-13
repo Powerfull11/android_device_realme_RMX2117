@@ -38,7 +38,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	# Configure some default settings for the build
 	export ALLOW_MISSING_DEPENDENCIES=true
 	export OF_DISABLE_MIUI_SPECIFIC_FEATURES=1
-	export OF_VANILLA_BUILD=0
+	export OF_VANILLA_BUILD=1
 	export OF_SKIP_ORANGEFOX_PROCESS=1
 	export OF_SUPPORT_OZIP_DECRYPTION=1
 	export FOX_USE_BASH_SHELL=1
@@ -60,7 +60,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	export OF_FL_PATH2=""
 	export OF_FLASHLIGHT_ENABLE=1
 	export OF_MAINTAINER="Powerfull11"
-	export OF_TARGET_DEVICES="RMX2117, RMX2111, RMX2117L1, RMX2111CN, RMX2117IN"
+	#export OF_TARGET_DEVICES="RMX2117, RMX2111, RMX2117L1, RMX2111CN, RMX2117IN"
 	export TARGET_DEVICE_ALT="RMX2117, RMX2111"
 	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
 	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
@@ -84,7 +84,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	#R11
 	export FOX_R11=1
 	export FOX_VERSION="R11.1_1"
-	export FOX_BUILD_TYPE="Stable"
+	export FOX_BUILD_TYPE="Initial"
 	export FOX_VARIANT="RUI2.0"
 
 	# maximum permissible splash image size (in kilobytes); do *NOT* increase!
