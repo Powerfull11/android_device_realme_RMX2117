@@ -10,7 +10,7 @@ else
       device=$(sed -n '/ro.commonsoft.ota/ p' /cache/runtime.prop | cut -d'=' -f2)
       soft=$(sed -n '/ro.separate.soft/ p' /cache/runtime.prop | cut -d'=' -f2)
       name=$(sed -n '/ro.oppo.market.name/ p' /cache/runtime.prop | cut -d'=' -f2 | sed 's/realme //')
-      
+
       echo "product is ${product}"
       echo "device is ${device}"
       echo "soft is ${soft}"
@@ -32,10 +32,10 @@ else
         echo "change product"
         sed -i "s/RMX2117/${product}/" /prop.default
         sed -i "s/RMX2117/${product}/" /default.prop
-        sed -i "$ a ro.product.name=omni_${product}" /prop.default
+        sed -i "$ a ro.product.name=twrp_${product}" /prop.default
       else
         echo "pass change product"
-        sed -i "$ a ro.product.name=omni_RMX2117" /prop.default
+        sed -i "$ a ro.product.name=twrp_RMX2117" /prop.default
       fi
       
       if [ "$soft" ]; then

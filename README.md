@@ -6,9 +6,11 @@ For building TWRP for realme Narzo 30 Pro 5g
 Works:
 
 - ADB
-- Decryption of /data (without password)
+- Decryption
 - Screen brightness settings
 - Vibration on touch
+- backup
+- MTP
 
 # Compile
 

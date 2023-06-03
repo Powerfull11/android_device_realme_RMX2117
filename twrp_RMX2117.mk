@@ -1,5 +1,6 @@
 #
-# Copyright (C) 2021 The TWRP Open Source Project
+# Copyright (C) 2020 The Android Open Source Project
+# Copyright (C) 2020 The TWRP Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,33 +20,20 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
-# Inherit from our custom product configuration
+# Inherit some common twrp stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
 PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root) \
 	$(LOCAL_PATH)/prebuilt/dtb:dtb.img
 
-## Device identifier. This must come after all inclusions
+# Device specific configs.
+$(call inherit-product, device/realme/RMX2117/device.mk)
+
+# Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := RMX2117
 PRODUCT_NAME := twrp_RMX2117
-PRODUCT_BRAND := RealMe
-PRODUCT_MODEL := NARZO 30 PRO 5G
-PRODUCT_MANUFACTURER := RealMe
+PRODUCT_BRAND := realme
+PRODUCT_MODEL := Realme Narzo 30 PRO 5G
+PRODUCT_MANUFACTURER := realme
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_DEVICE="RMX2117L1"
 
-# Dynamic
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
-
-# Extra required packages
-PRODUCT_PACKAGES += \
-    libion
-    
-# fastbootd
-PRODUCT_PACKAGES += \
-    android.hardware.fastboot@1.0-impl-mock \
-    fastbootd
-
-# HACK: Set vendor patch level
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2099-12-31 \
-    ro.bootimage.build.date.utc=0 \
-    ro.build.date.utc=0
